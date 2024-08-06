@@ -18,7 +18,6 @@ environ.Env.read_env(BASE_DIR / '.env')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-^=v_v_8@3bxcj^nnyi7-b)4qeci-%q5oq+q%aa0y703ob7@g4^'
-SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -146,6 +145,6 @@ APPEND_SLASH=False
 EMAIL_HOST='sandbox.smtp.mailtrap.io'
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD =env ('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = 'noreply@jenga.com'
+DEFAULT_FROM_EMAIL = 'noreply@doc-online.com'
 EMAIL_PORT = '2525'
 EMAIL_USE_TLS = True

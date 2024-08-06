@@ -1,11 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.tokens import RefreshToken
 from .managers import UserManager
 
 
-class User(AbstractUser):
+class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=75, verbose_name=('First name'))
     last_name = models.CharField(max_length=75, verbose_name=('Last name'))
     email = models.EmailField(max_length=255, unique=True, verbose_name=_('Email Address'))

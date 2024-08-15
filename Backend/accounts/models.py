@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, Group, Permission
 from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.tokens import RefreshToken
 from .managers import UserManager
@@ -16,6 +16,23 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
+
+    groups = models.ManyToManyField(
+        Group,
+        related_name='custom_user_set',  # Custom related name to avoid clash
+        blank=True,
+        help_text=_('The groups this user belongs to. A user will get all permissions granted to each of their groups.'),
+        verbose_name=_('groups'),
+    )
+    
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='custom_user_permissions_set',  # Custom related name to avoid clash
+        blank=True,
+        help_text=_('Specific permissions for this user.'),
+        verbose_name=_('user permissions'),
+    )
+
 
     USERNAME_FIELD = 'email'
 
@@ -46,16 +63,16 @@ class OneTimePassword(models.Model):
         return f"(self.user.first_name)-passcode"
 
 
-class Patient(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='patient')
-    address = models.TextField()
-    date_of_birth = models.DateField()
+# class Patient(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='patient')
+#     address = models.TextField()
+#     date_of_birth = models.DateField()
 
 
-class Doctor(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='doctor')
-    specialty = models.CharField(max_length=100)
-    bio = models.TextField()
-    resume = models.FileField(upload_to='resumes/', null=True, blank=True)
-    consultation_fee = models.DecimalField(max_digits=6, decimal_places=2)
-    is_verified = models.BooleanField(default=False)
+# class Doctor(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='doctor')
+#     specialty = models.CharField(max_length=100)
+#     bio = models.TextField()
+#     resume = models.FileField(upload_to='resumes/', null=True, blank=True)
+#     consultation_fee = models.DecimalField(max_digits=6, decimal_places=2)
+#     is_verified = models.BooleanField(default=False)

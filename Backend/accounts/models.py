@@ -63,16 +63,16 @@ class OneTimePassword(models.Model):
         return f"(self.user.first_name)-passcode"
 
 
-# class Patient(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='patient')
-#     address = models.TextField()
-#     date_of_birth = models.DateField()
+class Patient(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='patient')
+    address = models.TextField()
+    date_of_birth = models.DateField()
 
 
-# class Doctor(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='doctor')
-#     specialty = models.CharField(max_length=100)
-#     bio = models.TextField()
-#     resume = models.FileField(upload_to='resumes/', null=True, blank=True)
-#     consultation_fee = models.DecimalField(max_digits=6, decimal_places=2)
-#     is_verified = models.BooleanField(default=False)
+class Doctor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='doctor')
+    specialty = models.CharField(max_length=100)
+    bio = models.TextField()
+    resume = models.FileField(upload_to='resumes/', null=True, blank=True)
+    consultation_fee = models.DecimalField(max_digits=6, decimal_places=2)
+    is_verified = models.BooleanField(default=False)

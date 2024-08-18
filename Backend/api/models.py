@@ -11,3 +11,12 @@ class DoctorProfile(models.Model):
 
     def __str__(self):
         return f"Dr. {self.user.first_name} {self.user.last_name} - {self.specialization}"
+
+
+class PatientProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date_of_birth = models.DateField()
+    medical_history = models.TextField()
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name} - Patient"

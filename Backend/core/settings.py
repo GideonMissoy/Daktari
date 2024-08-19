@@ -151,3 +151,6 @@ EMAIL_HOST_PASSWORD =env ('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = 'noreply@doc-online.com'
 EMAIL_PORT = '2525'
 EMAIL_USE_TLS = True
+
+
+AUTH_USER_MODEL = 'accounts.User'

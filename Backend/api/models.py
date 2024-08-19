@@ -71,3 +71,15 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment of {self.amount} by {self.patient.user.get_full_name} for appointment on {self.appointment.scheduled_time}"
+    
+
+class Review(models.Model):
+    doctor = models.ForeignKey('DoctorProfile', on_delete=models.CASCADE)
+    patient = models.ForeignKey('PatientProfile', on_delete=models.CASCADE)
+    appointment = models.ForeignKey('Appointment', on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    review = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Review by {self.patient.user.get_full_name} for {self.doctor.user.get_full_name} - {self.rating} Stars"

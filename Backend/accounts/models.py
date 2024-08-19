@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, Group, Permission
 from django.utils.translation import gettext_lazy as _
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -63,16 +64,24 @@ class OneTimePassword(models.Model):
         return f"(self.user.first_name)-passcode"
 
 
-class Patient(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='patient')
-    address = models.TextField()
-    date_of_birth = models.DateField()
-
-
-class Doctor(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='doctor')
-    specialty = models.CharField(max_length=100)
+class DoctorProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    specialty = models.CharField(max_length=255)
     bio = models.TextField()
-    resume = models.FileField(upload_to='resumes/', null=True, blank=True)
+    resume = models.FileField(upload_to='resumes/')
     consultation_fee = models.DecimalField(max_digits=6, decimal_places=2)
     is_verified = models.BooleanField(default=False)
+    available_times = models.JSONField()
+
+    def __str__(self):
+        return f"Dr. {self.user.first_name} {self.user.last_name} - {self.specialization}"
+
+
+class PatientProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date_of_birth = models.DateField()
+    medical_history = models.TextField()
+    address = models.TextField()
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name} - Patient"
